@@ -1,53 +1,64 @@
+#path = "C:\Users\84909\OneDrive\Desktop\CSC 110 Fall 2023\Projects\phone book\phone_book.txt"
 def open_book():
-    dict_data = {}
-    file = open("phone_book.txt")
+    # this function transfer info in a text file storing numbers into a dictionary
+    phone_book_dict = {}
+    file = open('phone_book.txt')
     for line in file:
-        line = line.strip("\n")
-        line=line.split(",")
-        key = line[0]
-        value = line[1]
-        dict_data[key] = value
-    original_dict = dict_data
+        if line.strip():
+            line = line.strip("\n").split(",")
+            name = line[0]
+            number = line[1]
+            phone_book_dict[name] = number
+    #original_dict = phone_book_dict
     file.close()
-    return dict_data
+    return phone_book_dict
     
 
-def adding(dict_data):
+def adding(phone_book_dict):
+    # this function add new contact into the phone book
     name = input("Enter name: ")
     number = input("Enter number: ")
-    dict_data[name] = number
-    return dict_data
+    phone_book_dict[name] = number
+    return phone_book_dict
 
-def searching(dict_data):
+def searching(phone_book_dict):
+    # this function search a contact in the phone book
     name_search = input("Enter name to search: ")
-    for key in dict_data:
-        if key == name_search:
-            print("Number:", end = " ")
-            return dict_data[key]
-    return "Not found"
+    if name_search in phone_book_dict:
+        print("Number:", end = phone_book_dict[name_search])
+    else: 
+        print("Not found")
 
-def display(dict_data):
-    for key in dict_data:
-        print(f"Name : {key} , number : {dict_data[key]}")
+def display(phone_book_dict):
+    # this function display every contact in the book
+    for name in phone_book_dict:
+        print(f"Name : {name} , number : {phone_book_dict[name]}")
 
-def delete(dict_data):
+def delete(phone_book_dict):
+    # this function deletes a contact
     name_delete = input("Enter a name to delete: ")
-    del dict_data[name_delete]
-    return dict_data
+    del phone_book_dict[name_delete]
+    return phone_book_dict
 
-def modify(dict_data):
+def modify(phone_book_dict):
+    # this function modifies a contact's number
     name = input("Enter the name to modify: ")
     new_number = input("Enter the new number: ")
-    dict_data[name] = new_number
-    return dict_data
+    phone_book_dict[name] = new_number
+    return phone_book_dict
 
-def close_book(dict_data):
-    file = open("phone_book.txt", "wt")
-    for key in dict_data:
-            file.write(key + "," + dict_data[key] + "\n")
+
+def close_book(phone_book_dict):
+    # this function store the contacts in the dictionary to a text file
+    file = open('phone_book.txt', "wt")
+    for name in phone_book_dict:
+            file.write(name + "," + phone_book_dict[name] + "\n")
     file.close()
+
+
 def main():
-    dict_data = open_book()
+    # this function combines all functions to make an interactive program
+    phone_book_dict = open_book()
     print('''1. Add new contact
 2. Search a contact
 3. Display all the contact
@@ -58,16 +69,16 @@ def main():
     while choice < 6 and choice > 0:
         
         if choice == 1:
-            adding(dict_data)
+            adding(phone_book_dict)
         elif choice == 2:
-            searching(dict_data)
+            searching(phone_book_dict)
         elif choice == 3:
-            display(dict_data)
+            display(phone_book_dict)
         elif choice == 4:
-            delete(dict_data)
+            delete(phone_book_dict)
         else:
-            modify(dict_data)
+            modify(phone_book_dict)
         print()
         choice = int(input("What is your choice: "))
-    close_book(dict_data)
+    close_book(phone_book_dict)
 main()
